@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: api-gateway
+
+  config:
+    import: configserver:http://localhost:8085
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+
+            - id: product-service
+              uri: lb://ms-product
+              predicates:
+                - Path=/api/products/**
+
+            - id: order-service
+              uri: lb://ms-order
+              predicates:
+                - Path=/api/orders/**
+
+            - id: payment-service
+              uri: lb://ms-payment
+              predicates:
+                - Path=/api/payments/**
+
+            - id: product-swagger
+              uri: lb://ms-product
+              predicates:
+                - Path=/product/v3/api-docs
+              filters:
+                - RewritePath=/product/v3/api-docs, /v3/api-docs
+
+            - id: order-swagger
+              uri: lb://ms-order
+              predicates:
+                - Path=/order/v3/api-docs
+              filters:
+                - RewritePath=/order/v3/api-docs, /v3/api-docs
+
+            - id: payment-swagger
+              uri: lb://ms-payment
+              predicates:
+                - Path=/payment/v3/api-docs
+              filters:
+                - RewritePath=/payment/v3/api-docs, /v3/api-docs
+
+
+springdoc:
+  swagger-ui:
+    disable-swagger-default-url: true
+    urls:
+      - name: Product Service
+        url: /product/v3/api-docs
+
+      - name: Order Service
+        url: /order/v3/api-docs
+
+      - name: Payment Service
+        url: /payment/v3/api-docs
+
+
+server:
+  port: 9090
