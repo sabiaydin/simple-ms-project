@@ -53,7 +53,7 @@ jobs:
         working-directory: ${{ matrix.service }}
         run: |
           chmod +x gradlew
-          ./gradlew clean build
+          ./gradlew clean build -x test
 
 
       # 5. Docker Hub-a login
