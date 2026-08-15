@@ -51,7 +51,10 @@ jobs:
       # 4. Gradle build + test
       - name: Build with Gradle
         working-directory: ${{ matrix.service }}
-        run: ./gradlew clean build
+        run: |
+          chmod +x gradlew
+          ./gradlew clean build
+
 
       # 5. Docker Hub-a login
       - name: Login to Docker Hub
